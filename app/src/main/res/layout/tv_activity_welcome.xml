@@ -26,11 +26,9 @@
     consent dialog to explain first - requesting the grant IS the consent moment) and goes
     straight to progress once it is actually confirmed granted.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ===================== PAGE 1: INTRO ===================== -->
     <LinearLayout
@@ -379,4 +377,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</merge>

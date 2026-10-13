@@ -33,7 +33,7 @@ pcap4jPacketfactoryStatic = "1.8.2"
 dnsjava = "3.6.5"
 slf4j = "1.7.36"
 # Test
-kotlinxSerialization = "1.8.1"
+kotlinxSerialization = "1.11.0"
 junit = "4.13.2"
 json = "20260814"
 androidxTestCore = "1.7.0"
