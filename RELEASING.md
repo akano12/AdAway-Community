@@ -27,10 +27,10 @@ The AdAway project provides [a global changelog](CHANGELOG.md).
 ## 4. Building release APK
 
 The release apk must be built using the `release` flavor (not `debug`).
-Building needs JDK 17 or later (CI uses JDK 21), the Android SDK with platform 34 and NDK `27.2.12479018` (the native tcpdump and web server modules), with `sdk.dir` set in `local.properties`.
+Building needs JDK 17 or later (CI uses JDK 21), the Android SDK with platform 37 and NDK `27.2.12479018` (the native tcpdump and web server modules), with `sdk.dir` set in `local.properties`. Missing SDK platforms are downloaded by the build.
 Run `./gradlew test assembleRelease`; the APK is written to `app/build/outputs/apk/release/`.
 
-The build already names the APK `AdAway.Community.v<version_name>.apk`, the format of the published GitHub releases (e.g. _AdAway.Community.v6.6.1-c.apk_).
+The build names the APK `AdAway.Community.v<version_name>-release.apk` (e.g. _AdAway.Community.v6.6.1-c-release.apk_). Drop the `-release` suffix when uploading it, to match the published GitHub releases (e.g. _AdAway.Community.v6.6.1-c.apk_).
 
 ## 5. Distributing release
 

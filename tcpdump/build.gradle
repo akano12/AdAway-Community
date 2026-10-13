@@ -3,17 +3,17 @@ plugins {
 }
 
 android {
-    compileSdk libs.versions.compileSdk.get() as int
-    ndkVersion libs.versions.ndk.get()
-    namespace 'org.adaway.libpcap'
+    compileSdk = libs.versions.compileSdk.get() as int
+    ndkVersion = libs.versions.ndk.get()
+    namespace = 'org.adaway.libpcap'
 
     defaultConfig {
-        minSdk libs.versions.minSdk.get() as int
+        minSdk = libs.versions.minSdk.get() as int
     }
 
     externalNativeBuild {
         ndkBuild {
-            path 'jni/Android.mk'
+            path = file('jni/Android.mk')
         }
     }
 }

@@ -13,16 +13,21 @@ if (keystorePropertiesFile.exists()) {
             keystoreProperties['keyPassword']
 }
 
+// Name the APKs after the published GitHub releases: AdAway.Community.v<version>-<build type>.apk
+base {
+    archivesName = "AdAway.Community.v${libs.versions.appName.get()}"
+}
+
 android {
-    compileSdk libs.versions.compileSdk.get() as int
-    ndkVersion libs.versions.ndk.get()
-    namespace 'org.adaway'
+    compileSdk = libs.versions.compileSdk.get() as int
+    ndkVersion = libs.versions.ndk.get()
+    namespace = 'org.adaway'
 
     defaultConfig {
-        minSdk libs.versions.minSdk.get() as int
-        targetSdk libs.versions.targetSdk.get() as int
-        versionCode libs.versions.appCode.get() as int
-        versionName libs.versions.appName.get()
+        minSdk = libs.versions.minSdk.get() as int
+        targetSdk = libs.versions.targetSdk.get() as int
+        versionCode = libs.versions.appCode.get() as int
+        versionName = libs.versions.appName.get()
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -30,7 +35,7 @@ android {
             }
         }
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     /*
@@ -46,10 +51,10 @@ android {
 
         signingConfigs {
             release {
-                storeFile file(keystoreProperties['storeFile'])
-                storePassword keystoreProperties['storePassword']
-                keyAlias keystoreProperties['keyAlias']
-                keyPassword keystoreProperties['keyPassword']
+                storeFile = file(keystoreProperties['storeFile'])
+                storePassword = keystoreProperties['storePassword']
+                keyAlias = keystoreProperties['keyAlias']
+                keyPassword = keystoreProperties['keyPassword']
             }
         }
 
@@ -63,13 +68,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildFeatures {
-        buildConfig true
-        viewBinding true
+        buildConfig = true
+        viewBinding = true
     }
 
     packaging {
@@ -80,17 +85,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    // Match the filename convention already used for published GitHub releases
-    // (e.g. AdAway.Community.v6.5.1-c.apk) so built APKs need no manual rename.
-    applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            outputFileName = "AdAway.Community.v${variant.versionName}.apk"
         }
     }
 
@@ -109,7 +106,7 @@ android {
 
     // Translations are managed on Transifex and may lag behind the default locale
     lint {
-        disable 'MissingTranslation'
+        disable += 'MissingTranslation'
     }
 }
 
