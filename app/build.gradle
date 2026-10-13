@@ -157,4 +157,9 @@ dependencies {
     androidTestImplementation libs.bundles.androidx.test
     androidTestImplementation libs.junit
     androidTestImplementation libs.androidx.room.testing
+    constraints {
+        // Room testing reads the schemas with kotlinx-serialization 1.8, and the test APK must use
+        // the app's versions, which SavedState otherwise keeps at 1.7
+        implementation libs.kotlinx.serialization.core
+    }
 }
