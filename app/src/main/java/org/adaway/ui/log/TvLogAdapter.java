@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.adaway.R;
 import org.adaway.db.entity.ListType;
-import org.adaway.ui.log.LogEntry;
 
 public class TvLogAdapter extends ListAdapter<LogEntry, TvLogAdapter.ViewHolder> {
 
@@ -66,7 +65,7 @@ public class TvLogAdapter extends ListAdapter<LogEntry, TvLogAdapter.ViewHolder>
 
         public void bind(LogEntry entry) {
             hostName.setText(entry.getHost());
-            
+
             // Format timestamp - LogEntry doesn't have getTimestamp currently available in the public model shown.
             // Assuming it might be added or we just skip it for now if not available.
             // Checking LogEntry.java content again... it ONLY has host and type.

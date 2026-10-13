@@ -17,7 +17,7 @@ public enum ListType {
     }
 
     public static ListType fromValue(int value) {
-        for (ListType listType : ListType.values()) {
+        for (ListType listType : values()) {
             if (listType.value == value) {
                 return listType;
             }

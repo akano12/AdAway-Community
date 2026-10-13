@@ -30,7 +30,7 @@ class ListsAdapter extends PagingDataAdapter<HostListItem, ListsAdapter.ViewHold
             new DiffUtil.ItemCallback<HostListItem>() {
                 @Override
                 public boolean areItemsTheSame(@NonNull HostListItem oldItem, @NonNull HostListItem newItem) {
-                    return (oldItem.getHost().equals(newItem.getHost()));
+                    return oldItem.getHost().equals(newItem.getHost());
                 }
 
                 @Override

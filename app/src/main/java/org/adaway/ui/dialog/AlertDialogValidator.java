@@ -1,6 +1,5 @@
 package org.adaway.ui.dialog;
 
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.arch.core.util.Function;
 

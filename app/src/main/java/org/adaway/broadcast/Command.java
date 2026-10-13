@@ -37,7 +37,7 @@ public enum Command {
             String commandName = intent.getStringExtra(INTENT_EXTRA_COMMAND);
             if (commandName != null) {
                 try {
-                    command = Command.valueOf(commandName);
+                    command = valueOf(commandName);
                 } catch (IllegalArgumentException e) {
                     Timber.w("Failed to read command named %s.", commandName);
                 }

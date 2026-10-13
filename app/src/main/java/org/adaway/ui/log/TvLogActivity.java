@@ -2,12 +2,10 @@ package org.adaway.ui.log;
 
 import static org.adaway.ui.Animations.removeView;
 import static org.adaway.ui.Animations.showView;
-import static java.lang.Boolean.TRUE;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -114,7 +112,7 @@ public class TvLogActivity extends AppCompatActivity {
             toggleRecordingButton.setText(isRecordingLogs ? getString(R.string.log_stop_recording) : getString(R.string.log_start_recording_button));
         }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -168,7 +166,7 @@ public class TvLogActivity extends AppCompatActivity {
                     break;
             }
         });
-        
+
         builder.setNegativeButton(R.string.button_cancel, null);
         builder.show();
     }

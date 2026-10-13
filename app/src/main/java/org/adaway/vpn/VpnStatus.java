@@ -26,7 +26,7 @@ public enum VpnStatus {
     }
 
     public static VpnStatus fromCode(int code) {
-        return Arrays.stream(VpnStatus.values())
+        return Arrays.stream(values())
                 .filter(vpnStatus -> vpnStatus.code == code)
                 .findAny()
                 .orElse(STOPPED);

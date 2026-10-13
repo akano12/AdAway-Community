@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 /**
  * This class is an {@link AndroidViewModel} for the {@link LogActivity}.
  *

@@ -28,7 +28,7 @@ public enum AdBlockMethod {
     }
 
     public static AdBlockMethod fromCode(int code) {
-        return Arrays.stream(AdBlockMethod.values())
+        return Arrays.stream(values())
                 .filter(method -> method.code == code)
                 .findAny()
                 .orElse(UNDEFINED);

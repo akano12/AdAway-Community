@@ -373,7 +373,6 @@ public class DnsServerMapper {
         return subnet;
     }
 
-
     /**
      * Compute the DNS servers the tunnel would actually forward to for a raw network DNS list, the
      * same set {@link #configureVpn} maps at establish time, so callers can tell whether a network

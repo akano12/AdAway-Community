@@ -330,6 +330,6 @@ public class RootModel extends AdBlockModel {
      */
     private boolean hasEnoughSpaceOnPartition(File target, long size) {
         long freeSpace = target.getFreeSpace();
-        return (freeSpace == 0 || freeSpace > size);
+        return freeSpace == 0 || freeSpace > size;
     }
 }
