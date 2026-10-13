@@ -72,6 +72,11 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    androidResources {
+        // Build the per-app language list (Android 13+) from the translated resource folders
+        generateLocaleConfig = true
+    }
+
     buildFeatures {
         buildConfig = true
         viewBinding = true
