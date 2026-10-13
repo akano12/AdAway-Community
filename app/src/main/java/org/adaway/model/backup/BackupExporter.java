@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.Executor;
 
@@ -58,14 +59,14 @@ public class BackupExporter {
      */
     public static void exportToBackup(Context context, Uri backupUri) {
         DISK_IO_EXECUTOR.execute(() -> {
-            boolean imported = true;
+            boolean exported = true;
             try {
                 exportBackup(context, backupUri);
             } catch (IOException e) {
-                Timber.e(e, "Failed to import backup.");
-                imported = false;
+                Timber.e(e, "Failed to export backup.");
+                exported = false;
             }
-            boolean successful = imported;
+            boolean successful = exported;
             String fileName = getFileNameFromUri(backupUri);
             MAIN_THREAD_EXECUTOR.execute(() -> notifyExportEnd(context, successful, fileName));
         });
@@ -87,14 +88,15 @@ public class BackupExporter {
 
     static void exportBackup(Context context, Uri backupUri) throws IOException {
         // Open writer on the export file
-        try (OutputStream outputStream = context.getContentResolver().openOutputStream(backupUri);
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            JSONObject backup = makeBackup(context);
-            writer.write(backup.toString(4));
+        try (OutputStream outputStream = context.getContentResolver().openOutputStream(backupUri)) {
+            if (outputStream == null) {
+                throw new IOException("Failed to open backup file.");
+            }
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
+            writer.write(makeBackup(context).toString(4));
+            writer.flush();
         } catch (JSONException e) {
             throw new IOException("Failed to generate backup.", e);
-        } catch (IOException e) {
-            throw new IOException("Could not write file.", e);
         }
     }
 

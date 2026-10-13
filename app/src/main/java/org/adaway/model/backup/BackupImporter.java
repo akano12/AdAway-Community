@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
 
 import static org.adaway.db.entity.ListType.ALLOWED;
@@ -84,8 +84,18 @@ public final class BackupImporter {
     }
 
     static void importBackup(Context context, Uri backupUri) throws IOException {
-        try (InputStream inputStream = context.getContentResolver().openInputStream(backupUri);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (InputStream inputStream = context.getContentResolver().openInputStream(backupUri)) {
+            if (inputStream == null) {
+                throw new IOException("Failed to open backup file.");
+            }
+            importBackup(context, inputStream);
+        } catch (FileNotFoundException exception) {
+            throw new IOException("Failed to find backup file.", exception);
+        }
+    }
+
+    private static void importBackup(Context context, InputStream inputStream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             StringBuilder contentBuilder = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -95,10 +105,6 @@ public final class BackupImporter {
             importBackup(context, backupObject);
         } catch (JSONException exception) {
             throw new IOException("Failed to parse backup file.", exception);
-        } catch (FileNotFoundException exception) {
-            throw new IOException("Failed to find backup file.", exception);
-        } catch (IOException exception) {
-            throw new IOException("Failed to read backup file.", exception);
         }
     }
 
@@ -106,19 +112,24 @@ public final class BackupImporter {
         AppDatabase database = AppDatabase.getInstance(context);
         HostsSourceDao hostsSourceDao = database.hostsSourceDao();
         HostListItemDao hostListItemDao = database.hostsListItemDao();
-
-        importSourceBackup(hostsSourceDao, backupObject.getJSONArray(SOURCES_KEY));
-        importListBackup(hostListItemDao, BLOCKED, backupObject.getJSONArray(BLOCKED_KEY));
-        importListBackup(hostListItemDao, ALLOWED, backupObject.getJSONArray(ALLOWED_KEY));
-        importListBackup(hostListItemDao, REDIRECTED, backupObject.getJSONArray(REDIRECTED_KEY));
+        JSONArray sources = backupObject.getJSONArray(SOURCES_KEY);
+        JSONArray blocked = backupObject.getJSONArray(BLOCKED_KEY);
+        JSONArray allowed = backupObject.getJSONArray(ALLOWED_KEY);
+        JSONArray redirected = backupObject.getJSONArray(REDIRECTED_KEY);
+        // Restore all or nothing, rather than leave a partly restored backup
+        database.runInTransaction(() -> {
+            importSourceBackup(hostsSourceDao, sources);
+            importListBackup(hostListItemDao, BLOCKED, blocked);
+            importListBackup(hostListItemDao, ALLOWED, allowed);
+            importListBackup(hostListItemDao, REDIRECTED, redirected);
+        });
     }
 
-    private static void importSourceBackup(HostsSourceDao hostsSourceDao, JSONArray sources) throws JSONException {
+    private static void importSourceBackup(HostsSourceDao hostsSourceDao, JSONArray sources) {
         for (int index = 0; index < sources.length(); index++) {
-            JSONObject sourceObject = sources.getJSONObject(index);
             HostsSource source;
             try {
-                source = sourceFromJson(sourceObject);
+                source = sourceFromJson(sources.getJSONObject(index));
             } catch (JSONException e) {
                 // Skip the entry rather than abandoning the whole restore: one rejected value
                 // must not cost the user every other entry in their backup.
@@ -129,24 +140,17 @@ public final class BackupImporter {
         }
     }
 
-    private static void importListBackup(HostListItemDao hostListItemDao, ListType type, JSONArray hosts) throws JSONException {
+    private static void importListBackup(HostListItemDao hostListItemDao, ListType type, JSONArray hosts) {
         for (int index = 0; index < hosts.length(); index++) {
-            JSONObject hostObject = hosts.getJSONObject(index);
             HostListItem host;
             try {
-                host = hostFromJson(hostObject);
+                host = hostFromJson(hosts.getJSONObject(index));
             } catch (JSONException e) {
                 Timber.w(e, "Skipping invalid %s entry %d.", type, index);
                 continue;
             }
             host.setType(type);
-            Optional<Integer> id = hostListItemDao.getHostId(host.getHost());
-            if (id.isPresent()) {
-                host.setId(id.get());
-                hostListItemDao.update(host);
-            } else {
-                hostListItemDao.insert(host);
-            }
+            hostListItemDao.upsertUserItem(host);
         }
     }
 }

@@ -28,7 +28,11 @@ public class AdBlockingTileService extends TileService {
     // Single Observer instance so onStopListening removes exactly what onStartListening registered.
     // A "this::updateTile" method reference creates a new instance each time, so removeObserver
     // would never match and observers would pile up.
-    private final Observer<Boolean> appliedObserver = this::updateTile;
+    private final Observer<Boolean> appliedObserver = applied -> updateTile(Boolean.TRUE.equals(applied));
+    /**
+     * The applied state observed while listening: the model changes with the ad blocking method.
+     */
+    private LiveData<Boolean> observedApplied;
 
     @Override
     public void onTileAdded() {
@@ -38,14 +42,16 @@ public class AdBlockingTileService extends TileService {
 
     @Override
     public void onStartListening() {
-        LiveData<Boolean> applied = getModel().isApplied();
-        applied.observeForever(this.appliedObserver);
+        this.observedApplied = getModel().isApplied();
+        this.observedApplied.observeForever(this.appliedObserver);
     }
 
     @Override
     public void onStopListening() {
-        LiveData<Boolean> applied = getModel().isApplied();
-        applied.removeObserver(this.appliedObserver);
+        if (this.observedApplied != null) {
+            this.observedApplied.removeObserver(this.appliedObserver);
+            this.observedApplied = null;
+        }
     }
 
     @Override
@@ -67,13 +73,12 @@ public class AdBlockingTileService extends TileService {
     }
 
     private void toggleAdBlocking() {
-        if (this.toggling.get()) {
+        if (!this.toggling.compareAndSet(false, true)) {
             return;
         }
         AdBlockModel model = getModel();
         boolean wasApplied = model.isApplied().getValue() == Boolean.TRUE;
         try {
-            this.toggling.set(true);
             Timber.i("Tile: user toggle (currently %s).", wasApplied ? "ACTIVE" : "INACTIVE");
             if (wasApplied) {
                 model.revert();

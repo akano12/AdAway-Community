@@ -33,6 +33,10 @@ import timber.log.Timber;
  */
 public class VpnModel extends AdBlockModel {
     private final HostEntryDao hostEntryDao;
+    /**
+     * The cached value of the hosts in no list.
+     */
+    private static final HostEntry NOT_LISTED = new HostEntry();
     private final LruCache<String, HostEntry> blockCache;
     /**
      * Maximum number of host names kept in the DNS log. The set is fed by the packet thread,
@@ -62,7 +66,10 @@ public class VpnModel extends AdBlockModel {
         this.blockCache = new LruCache<String, HostEntry>(4 * 1024) {
             @Override
             protected HostEntry create(String key) {
-                return VpnModel.this.hostEntryDao.getEntry(key);
+                // Cache the hosts in no list too: a null value is not cached, so every query
+                // to an ordinary host went to the database again
+                HostEntry entry = VpnModel.this.hostEntryDao.getEntry(key);
+                return entry == null ? NOT_LISTED : entry;
             }
         };
         this.logs = new LinkedHashSet<>();
@@ -162,7 +169,7 @@ public class VpnModel extends AdBlockModel {
         if (this.requestCount >= 1000) {
             int hits = this.blockCache.hitCount();
             int misses = this.blockCache.missCount();
-            double missRate = 100D * (hits + misses) / misses;
+            double missRate = 100D * misses / Math.max(1, hits + misses);
             Timber.d("Host cache miss rate: %s.", missRate);
             this.requestCount = 0;
         }
@@ -180,7 +187,8 @@ public class VpnModel extends AdBlockModel {
             }
         }
         // Check cache
-        return this.blockCache.get(host);
+        HostEntry entry = this.blockCache.get(host);
+        return entry == NOT_LISTED ? null : entry;
     }
 
     /**
