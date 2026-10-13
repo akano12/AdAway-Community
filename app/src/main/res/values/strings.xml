@@ -55,7 +55,7 @@
 
     <!--Help-->
     <string name="help_tab_faq">FAQ</string>
-    <string name="help_tab_problems">Troubleshooting</string>
+    <string name="help_tab_problems">Problems</string>
 
     <!--Other-->
     <string name="no_text_editor_title">No text editor installed</string>

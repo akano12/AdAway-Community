@@ -7,6 +7,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.fragment.app.FragmentActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -35,6 +36,7 @@ public class PrefsActivity extends AppCompatActivity implements PreferenceFragme
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         ThemeHelper.applyTheme(this);
         /*
@@ -83,12 +85,10 @@ public class PrefsActivity extends AppCompatActivity implements PreferenceFragme
         // an older revision of Android's settings guide. Nothing ever read it back, and the
         // method is deprecated, so it is gone: the sub-screens receive what they need through
         // their arguments.
-        // Replace the existing Fragment with the new Fragment
+        // Replace the existing Fragment with the new Fragment, with the standard open and close
+        // fragment transitions
         getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(
-                        R.animator.prefs_fragment_open_enter, R.animator.prefs_fragment_open_exit,
-                        R.animator.prefs_fragment_close_enter, R.animator.prefs_fragment_close_exit
-                )
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.settings_container, fragment)
                 .addToBackStack(null)
                 .commit();
