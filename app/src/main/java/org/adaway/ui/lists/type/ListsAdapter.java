@@ -8,11 +8,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagingDataAdapter;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.adaway.R;
 import org.adaway.db.entity.HostListItem;
+import org.adaway.ui.lists.HostListItemDiffCallback;
 import org.adaway.ui.lists.ListsViewCallback;
 
 import static org.adaway.db.entity.HostsSource.USER_SOURCE_ID;
@@ -23,24 +23,6 @@ import static org.adaway.db.entity.HostsSource.USER_SOURCE_ID;
  * @author Bruce BUJON (bruce.bujon(at)gmail(dot)com)
  */
 class ListsAdapter extends PagingDataAdapter<HostListItem, ListsAdapter.ViewHolder> {
-    /**
-     * This callback is use to compare hosts sources.
-     */
-    private static final DiffUtil.ItemCallback<HostListItem> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<HostListItem>() {
-                @Override
-                public boolean areItemsTheSame(@NonNull HostListItem oldItem, @NonNull HostListItem newItem) {
-                    return oldItem.getHost().equals(newItem.getHost());
-                }
-
-                @Override
-                public boolean areContentsTheSame(@NonNull HostListItem oldItem, @NonNull HostListItem newItem) {
-                    // NOTE: if you use equals, your object must properly override Object#equals()
-                    // Incorrectly returning false here will result in too many animations.
-                    return oldItem.equals(newItem);
-                }
-            };
-
     /**
      * This callback is use to call view actions.
      */
@@ -58,7 +40,7 @@ class ListsAdapter extends PagingDataAdapter<HostListItem, ListsAdapter.ViewHold
      * @param twoRows      Whether the list items need two rows or not.
      */
     ListsAdapter(@NonNull ListsViewCallback viewCallback, boolean twoRows) {
-        super(DIFF_CALLBACK);
+        super(HostListItemDiffCallback.INSTANCE);
         this.viewCallback = viewCallback;
         this.twoRows = twoRows;
     }

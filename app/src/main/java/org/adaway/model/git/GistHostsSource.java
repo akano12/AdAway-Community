@@ -8,9 +8,7 @@ import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
 
-import timber.log.Timber;
 
 /**
  * This class is an utility class to get information from GitHub gist hosting.
@@ -48,14 +46,6 @@ class GistHostsSource extends GitHostsJsonApiSource {
 
     @Nullable
     protected ZonedDateTime parseJsonBody(String body) throws JSONException {
-        JSONObject gistObject = new JSONObject(body);
-        String dateString = gistObject.getString("updated_at");
-        ZonedDateTime date = null;
-        try {
-            date = ZonedDateTime.parse(dateString);
-        } catch (DateTimeParseException exception) {
-            Timber.w(exception, "Failed to parse commit date: " + dateString + ".");
-        }
-        return date;
+        return parseDate(new JSONObject(body).getString("updated_at"));
     }
 }

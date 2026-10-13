@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagingDataAdapter;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.adaway.R;
@@ -27,19 +26,6 @@ import org.adaway.db.entity.HostListItem;
  * @author Bruce BUJON (bruce.bujon(at)gmail(dot)com)
  */
 class TvListsAdapter extends PagingDataAdapter<HostListItem, TvListsAdapter.ViewHolder> {
-    private static final DiffUtil.ItemCallback<HostListItem> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<HostListItem>() {
-                @Override
-                public boolean areItemsTheSame(@NonNull HostListItem oldItem, @NonNull HostListItem newItem) {
-                    return oldItem.getHost().equals(newItem.getHost());
-                }
-
-                @Override
-                public boolean areContentsTheSame(@NonNull HostListItem oldItem, @NonNull HostListItem newItem) {
-                    return oldItem.equals(newItem);
-                }
-            };
-
     interface OnItemClickListener {
         void onItemClick(HostListItem item);
     }
@@ -47,7 +33,7 @@ class TvListsAdapter extends PagingDataAdapter<HostListItem, TvListsAdapter.View
     private final OnItemClickListener onItemClickListener;
 
     TvListsAdapter(OnItemClickListener onItemClickListener) {
-        super(DIFF_CALLBACK);
+        super(HostListItemDiffCallback.INSTANCE);
         this.onItemClickListener = onItemClickListener;
     }
 

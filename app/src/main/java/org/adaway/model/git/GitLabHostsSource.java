@@ -4,17 +4,12 @@ import static java.util.stream.Collectors.joining;
 
 import androidx.annotation.Nullable;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-
-import timber.log.Timber;
 
 /**
  * This class is an utility class to get information from GitLab hosts source hosting.
@@ -63,19 +58,8 @@ public class GitLabHostsSource extends GitHostsJsonApiSource {
     }
 
     @Nullable
+    @Override
     protected ZonedDateTime parseJsonBody(String body) throws JSONException {
-        JSONArray commitArray = new JSONArray(body);
-        int nbrOfCommits = commitArray.length();
-        ZonedDateTime date = null;
-        for (int i = 0; i < nbrOfCommits && date == null; i++) {
-            JSONObject commitItemObject = commitArray.getJSONObject(i);
-            String dateString = commitItemObject.getString("committed_date");
-            try {
-                date = ZonedDateTime.parse(dateString);
-            } catch (DateTimeParseException exception) {
-                Timber.w(exception, "Failed to parse commit date: " + dateString + ".");
-            }
-        }
-        return date;
+        return parseCommitList(body, "committed_date");
     }
 }

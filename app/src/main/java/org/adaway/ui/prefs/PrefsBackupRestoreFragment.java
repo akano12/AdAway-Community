@@ -99,10 +99,11 @@ public class PrefsBackupRestoreFragment extends PrefsFragment {
         Preference backupPreference = findPreference(getString(R.string.pref_restore_key));
         requireNonNull(backupPreference, PREFERENCE_NOT_FOUND);
         backupPreference.setOnPreferenceClickListener(preference -> {
+            // The file pickers of older Android versions do not recognize the JSON type
             String[] mimeTypes;
-            if (Build.VERSION.SDK_INT < 28) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
                 mimeTypes = new String[]{"*/*"};
-            } else if (Build.VERSION.SDK_INT < 29) {
+            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 mimeTypes = new String[]{JSON_MIME_TYPE, "application/octet-stream"};
             } else {
                 mimeTypes = new String[]{JSON_MIME_TYPE};
