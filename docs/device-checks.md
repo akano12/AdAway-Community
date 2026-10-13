@@ -40,6 +40,22 @@ module enabled:
 Still to check: Android TV (needs a TV image), Ethernet (the emulator has none), the in-app update
 download (needs a newer release), the web server certificate trusted by the system.
 
+## Android 16 (targetSdk 36)
+
+Checked on the Android 16 `google_apis` image with gesture and 3-button navigation, and on Android 14
+with edge-to-edge enabled the same way:
+
+- The 14 instrumented tests pass, migrations 1 to 8 included.
+- VPN mode: the wizard, blocking and the foreground service work with targetSdk 36.
+- Every phone screen draws behind the system bars without content under them: the home header and
+  the action bars extend behind the status bar with light icons, the home bottom bar behind the
+  navigation bar, and the lists footer, the preferences, the DNS log, the update, help, hosts sources
+  and source editor screens keep their content clear of both bars, in light and dark mode.
+- The per-app language setting (Android 13+) switches the app to Hebrew from the `values-iw` folder.
+
+Still to check: Android TV with targetSdk 36 (the TV screens have no system bars, so they are not
+drawn edge-to-edge), root mode on Android 16.
+
 ## Emulator setup
 
 An Android 14 image with `adb root` support (`google_apis`) covers both ad blocking methods:

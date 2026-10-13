@@ -46,6 +46,7 @@ import org.adaway.databinding.LogActivityBinding;
 import org.adaway.databinding.LogRedirectDialogBinding;
 import org.adaway.db.entity.ListType;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 import org.adaway.ui.adblocking.ApplyConfigurationSnackbar;
 import org.adaway.ui.dialog.AlertDialogValidator;
 import org.adaway.util.Clipboard;
@@ -74,9 +75,11 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
          * Create activity.
          */
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         this.binding = LogActivityBinding.inflate(getLayoutInflater());
         setContentView(this.binding.getRoot());
+        SystemBars.fitContentBelowActionBar(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);

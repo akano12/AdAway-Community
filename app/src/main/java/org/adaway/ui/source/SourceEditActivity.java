@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBar;
 import org.adaway.R;
 import org.adaway.databinding.SourceEditActivityBinding;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 
 /**
  * This activity create, edit and delete a hosts source.
@@ -24,12 +25,14 @@ public class SourceEditActivity extends AbstractSourceEditActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         /*
          * Set view content.
          */
         SourceEditActivityBinding binding = SourceEditActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        SystemBars.fitContentBelowActionBar(this);
         /*
          * Configure actionbar.
          */

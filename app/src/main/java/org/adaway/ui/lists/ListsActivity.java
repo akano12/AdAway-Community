@@ -28,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.adaway.R;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 import org.adaway.ui.adblocking.ApplyConfigurationSnackbar;
 import org.adaway.ui.lists.type.AbstractListFragment;
 
@@ -79,11 +80,13 @@ public class ListsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         /*
          * Set view content.
          */
         setContentView(R.layout.lists_fragment);
+        SystemBars.fitContentBelowActionBar(this);
         /*
          * Configure actionbar.
          */

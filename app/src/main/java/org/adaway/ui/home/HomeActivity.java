@@ -29,7 +29,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModelProvider;
 
-
 import org.adaway.BuildConfig;
 import org.adaway.broadcast.UpdateReceiver;
 import org.adaway.R;
@@ -39,6 +38,7 @@ import org.adaway.helper.PreferenceHelper;
 import org.adaway.helper.ThemeHelper;
 import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.model.error.HostError;
+import org.adaway.ui.SystemBars;
 import org.adaway.ui.dialog.HostErrorDialog;
 import org.adaway.ui.dialog.VpnPersistenceDialog;
 import org.adaway.ui.help.HelpActivity;
@@ -70,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         // On Android TV, hand off to the Leanback-friendly home activity. The Leanback
         // launcher already targets TvHomeActivity directly, but the mobile HomeActivity
         // can still be the resolved entry point when launched via shortcuts, intents
@@ -90,6 +91,9 @@ public class HomeActivity extends AppCompatActivity {
         VpnServiceControls.resurrectIfKilledExternally(this);
         this.binding = HomeActivityBinding.inflate(getLayoutInflater());
         setContentView(this.binding.getRoot());
+        // The root background, the header color, shows behind the status bar
+        SystemBars.padForInsets(this.binding.getRoot(), true, true, false);
+        SystemBars.padForInsets(this.binding.bar, false, false, true);
 
         this.homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         this.homeViewModel.isAdBlocked().observe(this, this::notifyAdBlocked);
@@ -322,7 +326,7 @@ public class HomeActivity extends AppCompatActivity {
     private void notifyAdBlocked(boolean adBlocked) {
         int color = adBlocked ? getColor(R.color.primary) : Color.GRAY;
         this.binding.content.headerFrameLayout.setBackgroundColor(color);
-        getWindow().setStatusBarColor(color);
+        this.binding.getRoot().setBackgroundColor(color);
         this.binding.fab.setImageResource(adBlocked ? R.drawable.ic_pause_24dp : R.drawable.logo);
     }
 

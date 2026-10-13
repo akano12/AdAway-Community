@@ -21,6 +21,7 @@ import org.adaway.databinding.UpdateActityBinding;
 import org.adaway.helper.ThemeHelper;
 import org.adaway.model.update.ApkInstaller;
 import org.adaway.model.update.Manifest;
+import org.adaway.ui.SystemBars;
 
 import java.io.File;
 
@@ -39,9 +40,11 @@ public class UpdateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         this.binding = UpdateActityBinding.inflate(getLayoutInflater());
         setContentView(this.binding.getRoot());
+        SystemBars.padForInsets(this.binding.getRoot(), true, true, true);
 
         this.markwon = Markwon.create(this);
         this.updateViewModel = new ViewModelProvider(this).get(UpdateViewModel.class);

@@ -101,8 +101,9 @@ public final class BumpBottomBar extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         // Height is driven by the geometry: ledge + crest + the FAB emerging above the crest + shadow.
+        // The bottom padding is the navigation bar the bar extends behind (edge-to-edge)
         int height = Math.round(this.barHeightPx + this.bumpHeightPx + this.fabRadiusPx
-                + this.topPadPx + this.shadowRadiusPx);
+                + this.topPadPx + this.shadowRadiusPx) + getPaddingBottom();
         measureChildren(widthMeasureSpec, MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST));
         setMeasuredDimension(width, height);
     }
@@ -110,7 +111,7 @@ public final class BumpBottomBar extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         float centerX = getWidth() / 2f;
-        float crestY = getHeight() - this.barHeightPx - this.bumpHeightPx;
+        float crestY = getHeight() - getPaddingBottom() - this.barHeightPx - this.bumpHeightPx;
         // Centre every child (the FAB) on the crest so the button rests on the swell.
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
@@ -150,7 +151,7 @@ public final class BumpBottomBar extends FrameLayout {
     protected void onDraw(Canvas canvas) {
         float width = getWidth();
         float height = getHeight();
-        float ledgeY = height - this.barHeightPx;
+        float ledgeY = height - getPaddingBottom() - this.barHeightPx;
         float crestY = ledgeY - this.bumpHeightPx;
 
         // ── Fill: complete closed shape (with shadow) ──────────────────────────

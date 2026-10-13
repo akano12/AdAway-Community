@@ -43,13 +43,16 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.adaway.R;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 
 public class HelpActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         setContentView(R.layout.help_activity);
+        SystemBars.fitContentBelowActionBar(this);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

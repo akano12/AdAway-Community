@@ -13,6 +13,7 @@ import org.adaway.R;
 import org.adaway.helper.PreferenceHelper;
 import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.databinding.WelcomeActivityBinding;
+import org.adaway.ui.SystemBars;
 import org.adaway.ui.home.HomeActivity;
 
 import static android.view.View.GONE;
@@ -37,8 +38,10 @@ public class WelcomeActivity extends AppCompatActivity implements WelcomeNavigab
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         this.binding = WelcomeActivityBinding.inflate(getLayoutInflater());
         setContentView(this.binding.getRoot());
+        SystemBars.padForInsets(this.binding.getRoot(), true, true, true);
         buildPager();
         bindBackButton();
         bindNextButton();

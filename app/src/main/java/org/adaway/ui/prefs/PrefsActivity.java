@@ -14,6 +14,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.adaway.R;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 
 /**
  * This activity is the preferences activity.
@@ -38,11 +39,13 @@ public class PrefsActivity extends AppCompatActivity implements PreferenceFragme
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         /*
          * Set view content.
          */
         setContentView(R.layout.prefs_activity);
+        SystemBars.fitContentBelowActionBar(this);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()

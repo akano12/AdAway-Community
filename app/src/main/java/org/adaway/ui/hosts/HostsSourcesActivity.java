@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.adaway.R;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 
 /**
  * This activity display hosts list items.
@@ -17,6 +18,7 @@ public class HostsSourcesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         /*
          * Create fragment
@@ -26,6 +28,7 @@ public class HostsSourcesActivity extends AppCompatActivity {
          * Set view content.
          */
         setContentView(R.layout.hosts_sources_activity);
+        SystemBars.fitContentBelowActionBar(this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.hosts_sources_container, fragment)

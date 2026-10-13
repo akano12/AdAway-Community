@@ -154,7 +154,6 @@
             app:key="@string/pref_webserver_test_key"
             app:persistent="false"
             app:singleLineTitle="false"
-            app:summary="@string/pref_webserver_state_checking"
             app:title="@string/pref_webserver_test" />
         <Preference
             app:dependency="@string/pref_webserver_enabled_key"

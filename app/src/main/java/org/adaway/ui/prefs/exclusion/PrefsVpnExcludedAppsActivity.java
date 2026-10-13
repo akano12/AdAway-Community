@@ -16,6 +16,7 @@ import org.adaway.R;
 import org.adaway.databinding.VpnExcludedAppActivityBinding;
 import org.adaway.helper.PreferenceHelper;
 import org.adaway.helper.ThemeHelper;
+import org.adaway.ui.SystemBars;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -37,9 +38,11 @@ public class PrefsVpnExcludedAppsActivity extends AppCompatActivity implements E
          * Create activity.
          */
         super.onCreate(savedInstanceState);
+        SystemBars.enableEdgeToEdge(this);
         ThemeHelper.applyTheme(this);
         VpnExcludedAppActivityBinding binding = VpnExcludedAppActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        SystemBars.fitContentBelowActionBar(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(true);

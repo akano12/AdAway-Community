@@ -15,6 +15,8 @@
 * Fix the update screen staying stuck after a cancelled or failed download
 * Fix the VPN permission being asked again and again on the home screen when declined
 * Fix the daily app update check never showing its notification
+* Fix every DNS request to a host in no list querying the database again in VPN mode
+* Fix restoring a backup leaving it half restored when it failed part way
 * Fix English text changes not showing on devices set to US English
 
 ### Changed
@@ -28,6 +30,8 @@
 * Center the welcome screens, align the home screen tiles and add a back button to the update screen
 * Rename the "Dark theme" setting to "Theme", as it offers light, dark and system modes
 * Rewrite the English text of the app and its help pages for clarity and consistency
+* Support Android 15 and 16: the screens are drawn behind the system bars, as these versions require
+* Generate the in-app language list from the translations, which adds Hebrew and Indonesian to it
 
 ### Removed
 

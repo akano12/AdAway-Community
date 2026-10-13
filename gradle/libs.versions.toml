@@ -4,7 +4,7 @@ appName = "6.6.1-c"
 appCode = "60601" # Read x.yy.zz to match version name (suffix "-c" = community fork, ignored by code)
 agp = "9.4.1"
 compileSdk = "37"
-targetSdk = "34"
+targetSdk = "36"
 minSdk = "26"
 ndk = "27.2.12479018"
 # AndroidX
